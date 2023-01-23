@@ -3,9 +3,6 @@ name: Molecule Tests
 on:
   pull_request:
   push:
-    branches:
-      - main
-  # TODO: test dev weekly
 jobs:
   molecule:
     name: molecule
