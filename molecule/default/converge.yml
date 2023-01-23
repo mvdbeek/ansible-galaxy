@@ -3,6 +3,7 @@
   hosts: all
   vars:
     __galaxy_version: "{{ lookup('env', 'GALAXY_VERSION') }}"
+    galaxy_build_client: no
     galaxy_create_user: yes
     galaxy_manage_paths: yes
     galaxy_manage_clone: yes
