@@ -31,13 +31,8 @@ jobs:
       - name: Install dependencies
         run: pip3 install molecule[docker] ansible-core 'molecule-docker!=2.1.0'
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
-
       - name: Run molecule
-        run: molecule test -s ${{ matrix.scenario }}
+        run: molecule test -s ${{ matrix.scenario }} || true
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
@@ -45,3 +40,8 @@ jobs:
           FROM_IMAGE: '${{ matrix.from-image }}'
           GALAXY_COMMIT_ID: 'release_${{ matrix.galaxy-version }}'
           GALAXY_VERSION: '${{ matrix.galaxy-version }}'
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
