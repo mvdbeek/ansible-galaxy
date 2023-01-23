@@ -17,23 +17,9 @@ jobs:
         scenario:
           - default
         from-image:
-          - centos:7
-          - rockylinux:8
-          - ubuntu:20.04
           - ubuntu:22.04
         galaxy-version:
-          - '21.01'
-          - '22.01'
-          - '22.05'
           - 'dev'
-        exclude:
-          # wheels often don't exist in the combination of old package versions in older galaxy releases for newer
-          # python versions in newer operating systems; nobody should be installing an old galaxy on a new os anyway, so
-          # we can just skip those combinations.
-          - from-image: ubuntu:22.04
-            galaxy-version: '21.01'
-          - from-image: ubuntu:22.04
-            galaxy-version: '22.01'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -47,6 +33,11 @@ jobs:
       # https://github.com/ansible-community/molecule/issues/3733
       - name: Install dependencies
         run: pip3 install molecule[docker] ansible-core 'molecule-docker!=2.1.0'
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
 
       - name: Run molecule
         run: molecule test -s ${{ matrix.scenario }}
