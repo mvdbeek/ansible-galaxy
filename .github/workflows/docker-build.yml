@@ -32,6 +32,8 @@ jobs:
 
       - name: Patch Dockerfile to use local ansible-galaxy role
         run: |
+          # Copy role into galaxy directory so it's in the build context
+          cp -r ansible-galaxy-role galaxy/ansible-galaxy-role
           # Add a COPY instruction after ansible-galaxy install to override the role
           sed -i '/ansible-galaxy install -r requirements.yml/a COPY ansible-galaxy-role /tmp/ansible/galaxy-docker/roles/galaxy' galaxy/.k8s_ci.Dockerfile
 
@@ -41,7 +43,7 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: galaxy
           file: galaxy/.k8s_ci.Dockerfile
           push: false
           load: true
