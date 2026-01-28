@@ -36,6 +36,8 @@ jobs:
           cp -r ansible-galaxy-role galaxy/ansible-galaxy-role
           # Add a COPY instruction after ansible-galaxy install to override the role
           sed -i '/ansible-galaxy install -r requirements.yml/a COPY ansible-galaxy-role /tmp/ansible/galaxy-docker/roles/galaxy' galaxy/.k8s_ci.Dockerfile
+          # Change client build to not use --tags (run full playbook, deps are idempotent)
+          sed -i 's/--tags "galaxy_build_client"//' galaxy/.k8s_ci.Dockerfile
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
