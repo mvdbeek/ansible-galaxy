@@ -30,14 +30,17 @@ jobs:
           ref: ${{ matrix.galaxy-branch }}
           path: galaxy
 
+      - name: Use simplified Dockerfile (single build stage)
+        run: |
+          # Download the new simplified Dockerfile that drops separate server/client build stages
+          curl -sL https://raw.githubusercontent.com/galaxyproject/galaxy/bf302e24fefac14782110f10e6d29369be785b70/.k8s_ci.Dockerfile -o galaxy/.k8s_ci.Dockerfile
+
       - name: Patch Dockerfile to use local ansible-galaxy role
         run: |
           # Copy role into galaxy directory so it's in the build context
           cp -r ansible-galaxy-role galaxy/ansible-galaxy-role
           # Add a COPY instruction after ansible-galaxy install to override the role
           sed -i '/ansible-galaxy install -r requirements.yml/a COPY ansible-galaxy-role /tmp/ansible/galaxy-docker/roles/galaxy' galaxy/.k8s_ci.Dockerfile
-          # Change client build to not use --tags (run full playbook, deps are idempotent)
-          sed -i 's/--tags "galaxy_build_client"//' galaxy/.k8s_ci.Dockerfile
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
