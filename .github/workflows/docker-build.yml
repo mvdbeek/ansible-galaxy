@@ -53,8 +53,6 @@ jobs:
           push: false
           load: true
           tags: galaxy-test:${{ matrix.galaxy-branch }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Test Galaxy container starts
         run: |
