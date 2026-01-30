@@ -11,8 +11,8 @@
     - name: Install Galaxy base dependencies (uv)
       command: >-
         {{ galaxy_venv_dir }}/bin/uv pip install
-        --index-url https://wheels.galaxyproject.org/simple/
-        --extra-index-url https://pypi.python.org/simple
+        --python {{ galaxy_venv_dir }}/bin/python
+        --extra-index-url https://wheels.galaxyproject.org/simple/
         -r {{ galaxy_requirements_file }}
       environment:
         PYTHONPATH: null
@@ -41,8 +41,8 @@
     - name: Install Galaxy conditional dependencies (uv)
       command: >-
         {{ galaxy_venv_dir }}/bin/uv pip install
-        --index-url https://wheels.galaxyproject.org/simple/
-        --extra-index-url https://pypi.python.org/simple
+        --python {{ galaxy_venv_dir }}/bin/python
+        --extra-index-url https://wheels.galaxyproject.org/simple/
         {{ conditional_dependencies.stdout_lines | join(' ') }}
       environment:
         PYTHONPATH: null
@@ -63,6 +63,7 @@
     - name: Install additional packages into galaxy's virtual environment (uv)
       command: >-
         {{ galaxy_venv_dir }}/bin/uv pip install
+        --python {{ galaxy_venv_dir }}/bin/python
         {{ galaxy_additional_venv_packages | join(' ') }}
       environment:
         PYTHONPATH: null
