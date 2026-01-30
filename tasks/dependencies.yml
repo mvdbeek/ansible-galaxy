@@ -12,6 +12,7 @@
       command: >-
         {{ galaxy_venv_dir }}/bin/uv pip install
         --python {{ galaxy_venv_dir }}/bin/python
+        --index-strategy unsafe-best-match
         --extra-index-url https://wheels.galaxyproject.org/simple/
         -r {{ galaxy_requirements_file }}
       environment:
@@ -42,6 +43,7 @@
       command: >-
         {{ galaxy_venv_dir }}/bin/uv pip install
         --python {{ galaxy_venv_dir }}/bin/python
+        --index-strategy unsafe-best-match
         --extra-index-url https://wheels.galaxyproject.org/simple/
         {{ conditional_dependencies.stdout_lines | join(' ') }}
       environment:
