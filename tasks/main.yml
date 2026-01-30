@@ -90,8 +90,7 @@
     apply:
       tags: galaxy_fetch_dependencies
   when: galaxy_fetch_dependencies
-  tags:
-    - galaxy_fetch_dependencies
+  tags: galaxy_fetch_dependencies
 
 - name: Include mutable config setup tasks
   include_tasks:
